@@ -1,0 +1,54 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Select Payment Method</h1>
+
+    {% if credit_cards %}
+    <!-- If user has credit cards -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            {% for card in credit_cards %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm border-light">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <!-- Card Information -->
+                            <div>
+                                <h5 class="card-title">{{ card.cardholder_name }}</h5>
+                                <p class="card-text card-number">**** **** **** {{ card.card_number|slice:"-4:" }}</p>
+                                <p class="card-text"><strong>Expires:</strong> {{ card.expiry_date }}</p>
+                            </div>
+                            <!-- Select button -->
+                            <div>
+                                <button type="submit" name="selected_card" value="{{ card.id }}" class="btn btn-success btn-sm">Select</button>
+                            </div>
+                            <!-- Delete button -->
+                            <div>
+                                <form action="{% url 'delete_credit_card' card.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger w-100">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </form>
+
+    <!-- Button to add new credit cards -->
+    <div class="mt-4">
+        <a href="{% url 'add_credit_card' %}" class="btn btn-primary">Add New Credit Card</a>
+    </div>
+
+    {% else %}
+    <!-- If user doesn't have credit cards -->
+    <div class="alert alert-warning">
+        You don't have any saved credit cards. Please <a href="{% url 'add_credit_card' %}" class="btn btn-link">add a credit card</a> to proceed with the payment.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

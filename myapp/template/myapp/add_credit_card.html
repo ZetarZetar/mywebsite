@@ -1,0 +1,85 @@
+{% extends 'myapp/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Add Credit Card</h1>
+    <form method="POST" class="shadow p-4 rounded bg-light">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="cardholder_name" class="form-label">Cardholder Name</label>
+            <input type="text" name="cardholder_name" id="cardholder_name" class="form-control" placeholder="John Doe" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="card_number" class="form-label">Card Number</label>
+            <input type="text" name="card_number" id="card_number" class="form-control" placeholder="1234 5678 9101 1121" maxlength="16" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="expiry_date" class="form-label">Expiry Date</label>
+            <input type="month" name="expiry_date" id="expiry_date" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="cvv" class="form-label">CVV</label>
+            <input type="text" name="cvv" id="cvv" class="form-control" placeholder="123" maxlength="3" required>
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Add Credit Card</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    /* Styling for form elements */
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    }
+
+    /* Button styling */
+    .btn {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    /* Card styling */
+    .shadow {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .rounded {
+        border-radius: 10px;
+    }
+
+    /* Padding for the form container */
+    .p-4 {
+        padding: 30px;
+    }
+
+    .bg-light {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}

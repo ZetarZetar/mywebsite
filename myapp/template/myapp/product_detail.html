@@ -1,0 +1,60 @@
+{% extends 'myapp/base.html' %}
+
+{% block myheader %}
+{% endblock myheader %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-lg">
+        <div class="row g-0">
+            <div class="col-md-6">
+                <img src="{{ product.picture.url }}" class="img-fluid rounded-start" alt="{{ product.title }}">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h1 class="card-title text-primary">{{ product.title }}</h1>
+                    <p class="card-text"><strong>Price:</strong> <span class="text-danger">฿{{ product.price }}</span></p>
+                    <p class="card-text"><strong>Description:</strong> {{ product.description }}</p>
+                    <p class="card-text"><strong>Quantity Available:</strong>
+                        {% if product.quantity > 0 %}
+                            <span class="text-success">{{ product.quantity }}</span>
+                        {% else %}
+                            <span class="text-danger">Out of Stock</span>
+                        {% endif %}
+                    </p>
+
+                    {% if product.specfile %}
+                    <p class="card-text">
+                        <strong>Specfile:</strong> <a href="{{ product.specfile.url }}" class="text-info" target="_blank">Download</a>
+                    </p>
+                    {% endif %}
+
+                    {% if product.quantity > 0 %}
+                    <form id="addToBasketForm" action="{% url 'add-to-basket' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-1">
+                            <label for="quantity" class="form-label"><strong>Choose Quantity:</strong></label>
+                            <input 
+                                type="number" 
+                                name="quantity" 
+                                id="quantity" 
+                                class="form-control w-50" 
+                                min="1" 
+                                max="{{ product.quantity }}" 
+                                value="1" 
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">Add to Basket</button>
+                    </form>
+                    {% else %}
+                    <button class="btn btn-secondary mt-3" disabled>Out of Stock</button>
+                    {% endif %}
+
+                    <a href="/" class="btn btn-outline-primary mt-3">Back to Products</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
